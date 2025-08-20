@@ -26,6 +26,32 @@ namespace adonet1Test
             Assert.NotNull(customers);
         }
 
+        [Theory]
+        [InlineData("AllCustomers")]
+        [InlineData("ActiveProducts")]
+        [InlineData("RecentOrders")]
+        public void Test_Configurable_Query(string queryName)
+        {
+            var dataAccess = new ConfigurableDataAccess();
+
+            // Tests SQL from configuration
+            var result = dataAccess.ExecuteConfiguredQuery(queryName);
+            Assert.NotNull(result);
+        }
+
+        [Theory]
+        [InlineData("customers")]
+        [InlineData("products") ]
+        [InlineData("orders")]
+        public void Test_Computed_Table_Names(string tableType)
+        {
+            var dataAccess = new ConfigurableDataAccess();
+
+            // Tests SQL from configuration
+            var numRows = dataAccess.GetTableRecordCount(tableType);
+            Assert.True(numRows >= 0);
+        }
+
         [Fact]
         public void Test_Configurable_Data_Access()
         {

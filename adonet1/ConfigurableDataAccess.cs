@@ -1,4 +1,3 @@
-using System;
 using System.Data;
 using System.Text;
 using Microsoft.Data.SqlClient;
@@ -23,7 +22,13 @@ namespace adonet1
             queryBuilder = new FragmentedQueryBuilder();
         }
 
-        // Pattern: SQL from configuration (would need appsettings.json entries)
+        /// <summary>
+        /// Pattern: SQL from configuration (would need appsettings.json entries)
+        /// 
+        /// 9a Configuration-Driven SQL: SQL queries from appsettings.json
+        /// </summary>
+        /// <param name="queryKey"></param>
+        /// <returns></returns>
         public DataTable ExecuteConfiguredQuery(string queryKey)
         {
             var sql = configuration[$"CustomQueries:{queryKey}"] ?? 
@@ -38,7 +43,17 @@ namespace adonet1
             return dt;
         }
 
-        // Pattern: SQL built from fragments in different classes
+        /// <summary>
+        /// Pattern: SQL built from fragments in different classes
+        /// 
+        /// 6d Dynamic SQL Construction: SQL fragments stored in arrays/collections
+        /// 7a Fragmented SQL References: Table/column names in constants
+        /// 7b Fragmented SQL References: SQL parts scattered across multiple classes
+        /// 7c Fragmented SQL References: JOIN fragments as separate methods
+        /// </summary>
+        /// <param name="includeOrders"></param>
+        /// <param name="includeProducts"></param>
+        /// <returns></returns>
         public DataTable GetCustomerReport(bool includeOrders, bool includeProducts)
         {
             var sql = queryBuilder.BuildCustomerReportQuery(includeOrders, includeProducts);
@@ -52,7 +67,13 @@ namespace adonet1
             return dt;
         }
 
-        // Pattern: SQL with runtime table name resolution
+        /// <summary>
+        /// Pattern: SQL with runtime table name resolution
+        /// 
+        /// 12d Complex Query Patterns: Computed table names from variables
+        /// </summary>
+        /// <param name="tableType"></param>
+        /// <returns></returns>
         public int GetTableRecordCount(string tableType)
         {
             var sql = queryBuilder.GetTableStatsQuery(tableType);
@@ -65,7 +86,15 @@ namespace adonet1
             }
         }
 
-        // Pattern: SQL with method chaining and fluent interface
+        /// <summary>
+        /// Pattern: SQL with method chaining and fluent interface
+        /// 
+        /// 6b Dynamic SQL Construction: StringBuilder for complex query building
+        /// 7a Fragmented SQL References: Table/column names in constants
+        /// 7b Fragmented SQL References: SQL parts scattered across multiple classes
+        /// 9c Configuration-Driven SQL: Method chaining/fluent interfaces for SQL building
+        /// </summary>
+        /// <returns></returns>
         public DataTable ExecuteFluentQuery()
         {
             var sql = new StringBuilder()
@@ -84,22 +113,4 @@ namespace adonet1
         }
     }
 
-    // Extension methods for fluent SQL building - more fragmentation
-    public static class SQLBuilderExtensions
-    {
-        public static StringBuilder AppendSelect(this StringBuilder sb)
-        {
-            return sb.Append($"SELECT {SQLFragments.GetCustomerSelectList()}");
-        }
-
-        public static StringBuilder AppendFrom(this StringBuilder sb)
-        {
-            return sb.Append($" FROM [dbo].{SQLFragments.CUSTOMERS_TABLE} c");
-        }
-
-        public static StringBuilder AppendWhere(this StringBuilder sb)
-        {
-            return sb.Append($" WHERE c.{SQLFragments.CUST_ID_COL} > 0");
-        }
-    }
 }
