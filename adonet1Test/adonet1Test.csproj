@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\adonet1\adonet1.csproj" />
+    <ProjectReference Include="..\adonet1.Reporting\adonet1.Reporting.csproj" />
   </ItemGroup>
 
   <ItemGroup>
