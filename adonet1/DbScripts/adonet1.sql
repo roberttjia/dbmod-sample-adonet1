@@ -1,6 +1,9 @@
 ﻿USE [adonet1]
 GO
-/****** Object:  Table [dbo].[tbl_customers]    Script Date: 8/20/2025 12:31:06 PM ******/
+/****** Object:  Schema [reporting]    Script Date: 8/20/2025 4:38:00 PM ******/
+CREATE SCHEMA [reporting]
+GO
+/****** Object:  Table [dbo].[tbl_customers]    Script Date: 8/20/2025 4:38:00 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -16,7 +19,7 @@ CREATE TABLE [dbo].[tbl_customers](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[tbl_orders]    Script Date: 8/20/2025 12:31:06 PM ******/
+/****** Object:  Table [dbo].[tbl_orders]    Script Date: 8/20/2025 4:38:00 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -33,7 +36,7 @@ CREATE TABLE [dbo].[tbl_orders](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[tbl_products]    Script Date: 8/20/2025 12:31:06 PM ******/
+/****** Object:  Table [dbo].[tbl_products]    Script Date: 8/20/2025 4:38:00 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -60,7 +63,7 @@ REFERENCES [dbo].[tbl_products] ([product_id])
 GO
 ALTER TABLE [dbo].[tbl_orders] CHECK CONSTRAINT [FK_tbl_orders_tbl_products]
 GO
-/****** Object:  StoredProcedure [dbo].[proc_DeleteCustomerById]    Script Date: 8/20/2025 12:31:06 PM ******/
+/****** Object:  StoredProcedure [dbo].[proc_DeleteCustomerById]    Script Date: 8/20/2025 4:38:00 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -75,7 +78,7 @@ BEGIN
     SET @Deleted_Count = @@ROWCOUNT
 END
 GO
-/****** Object:  StoredProcedure [dbo].[proc_SearchCustomersByLastName]    Script Date: 8/20/2025 12:31:06 PM ******/
+/****** Object:  StoredProcedure [dbo].[proc_SearchCustomersByLastName]    Script Date: 8/20/2025 4:38:00 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -91,5 +94,23 @@ BEGIN
 	SELECT TOP(@MaxRows) * FROM tbl_customers
     WHERE last_nm LIKE @LastNameSearch
     ORDER BY last_nm DESC
+END
+GO
+/****** Object:  StoredProcedure [reporting].[proc_ArchiveOrders]    Script Date: 8/20/2025 4:38:00 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [reporting].[proc_ArchiveOrders] 
+@CutoffDate as datetime,
+@ArchivedCount as int output
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+	-- Do nothing
+	SET @ArchivedCount = 0
 END
 GO
