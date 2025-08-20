@@ -1,0 +1,1 @@
+Sample ADO.NET project with database varying access patterns.

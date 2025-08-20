@@ -6,6 +6,8 @@ namespace adonet1
 {
     /// <summary>
     /// Generic data access class pattern. Common DB related functionality is encaptulated here
+    /// 
+    /// 11c Generic Data Access: Reusable data access patterns
     /// </summary>
     public class GenericDataAccess
     {
@@ -18,6 +20,9 @@ namespace adonet1
         /// <summary>
         /// Generic method to execute an SQL statement that returns a DataSet.
         /// Only input parameters.
+        /// 
+        /// 11a Generic Data Access: Parameterized generic methods for any SQL
+        /// 11b Generic Data Access: Generic parameter collections
         /// </summary>
         /// <param name="SelectSQL"></param>
         /// <param name="sqlParams"></param>
@@ -40,6 +45,10 @@ namespace adonet1
 
         /// <summary>
         /// Execute a stored procedure that returns a DataSet
+        /// 
+        /// 5a  Stored Procedures: CommandType.StoredProcedure
+        /// 11a Generic Data Access: Parameterized generic methods for any SQL
+        /// 11b Generic Data Access: Generic parameter collections
         /// </summary>
         /// <param name="storedProcedure"></param>
         /// <param name="sqlParams"></param>
@@ -62,6 +71,15 @@ namespace adonet1
             return dataSet;
         }
 
+        /// <summary>
+        /// Execute any SQL statement using ExecuteNonQuery
+        /// 
+        /// 11a Generic Data Access: Parameterized generic methods for any SQL
+        /// 11b Generic Data Access: Generic parameter collections
+        /// </summary>
+        /// <param name="sql"></param>
+        /// <param name="sqlParams"></param>
+        /// <returns></returns>
         public int ExecuteNonQuerySQL(string sql, GenericSQLParams sqlParams)
         {
             int numRowsAffected = 0;
@@ -77,6 +95,16 @@ namespace adonet1
             }
             return numRowsAffected;
         }
+
+        /// <summary>
+        /// Execute any stored procedure using ExecuteNonQuery
+        /// 
+        /// 5a  Stored Procedures: CommandType.StoredProcedure
+        /// 11b Generic Data Access: Generic parameter collections
+        /// </summary>
+        /// <param name="storedProcedure"></param>
+        /// <param name="sqlParams"></param>
+        /// <returns></returns>
         public int ExecuteNonQuerySP(string storedProcedure, GenericSQLParams sqlParams)
         {
             int numRowsAffected = 0;

@@ -10,6 +10,7 @@ namespace adonet1
 {
     /// <summary>
     /// Customer Data Access class
+    /// 1.a - Connection Management: SqlConnection with connection strings from configuration
     /// </summary>
     public class CustomerDataAccess
     {
@@ -17,9 +18,12 @@ namespace adonet1
 
         /// <summary>
         /// This is a common access pattern to insert a row into the DB.
-        /// - INSERT
-        /// - parameterized SQL
-        /// - SQL string concatenation "+"
+        /// 
+        /// 1b Connection Management: Using statements for proper disposal
+        /// 2a Command Execution: SqlCommand with parameterized queries
+        /// 2b Command Execution: ExecuteScalar() for single values
+        /// 4a Parameter Handling: AddWithValue() for input parameters
+        /// 6a Command Execution: String concatenation with + operator
         /// </summary>
         /// <param name="cust"></param>
         /// <returns></returns>
@@ -44,9 +48,12 @@ namespace adonet1
 
         /// <summary>
         /// Update customer record using parameterized SQL. 
-        /// - UPDATE
-        /// - parameterized SQL
-        /// - SQL string concatenation "+"
+        /// 
+        /// 1b Connection Management: Using statements for proper disposal
+        /// 2a Command Execution: SqlCommand with parameterized queries
+        /// 2c Command Execution: ExecuteNonQuery() for INSERT/UPDATE/DELETE
+        /// 4a Parameter Handling: AddWithValue() for input parameters
+        /// 6a Command Execution: String concatenation with + operator
         /// </summary>
         /// <param name="cust"></param>
         /// <returns></returns>
@@ -75,6 +82,12 @@ namespace adonet1
 
         /// <summary>
         /// Gets a customer record based on standard parameterized SQL
+        /// 
+        /// 1b Connection Management: Using statements for proper disposal
+        /// 2a Command Execution: SqlCommand with parameterized queries
+        /// 3a - Data Retrieval: SqlDataAdapter with DataTable/DataSet
+        /// 3c - Data Retrieval: Manual column mapping from DataTable rows
+        /// 4a Parameter Handling: AddWithValue() for input parameters
         /// </summary>
         /// <param name="CustomerId"></param>
         /// <returns></returns>
@@ -108,6 +121,13 @@ namespace adonet1
         /// This access patten uses SELECT *, and binds to the expected columns while iterating
         /// through the DataTable rows.
         /// It also uses a WHERE clause constructed in a helper method.
+        /// 
+        /// 1b Connection Management: Using statements for proper disposal
+        /// 2a Command Execution: SqlCommand with parameterized queries
+        /// 3a Data Retrieval: SqlDataAdapter with DataTable/DataSet
+        /// 3c Data Retrieval: Manual column mapping from DataTable rows
+        /// 6e Dynamic SQL Construction: C# interpolation of SQL strings
+        /// 7b Fragmented SQL References: SQL parts scattered across multiple classes
         /// </summary>
         /// <param name="FirstNameSearch"></param>
         /// <param name="LastNameSearch"></param>
@@ -152,6 +172,11 @@ namespace adonet1
         /// <summary>
         /// This access pattern uses input and output parameters in a stored procedure, both of which
         /// may get changed by DMS.
+        ///
+        /// 1b Connection Management: Using statements for proper disposal
+        /// 2a Command Execution: SqlCommand with parameterized queries
+        /// 4a Parameter Handling: AddWithValue() for input parameters
+        /// 4b Parameter Handling: Output parameters with ParameterDirection.Output
         /// </summary>
         /// <param name="CustomerId"></param>
         /// <returns></returns>
