@@ -16,8 +16,10 @@ namespace adonet1
         private readonly string connectionString = ConfigHelper.GetConfiguration().GetConnectionString("DefaultConnection");
 
         /// <summary>
-        /// This is a common access pattern to insert a row into the DB. It uses parametrized SQL
-        /// and broken into multiple lines for readability.
+        /// This is a common access pattern to insert a row into the DB.
+        /// - INSERT
+        /// - parameterized SQL
+        /// - SQL string concatenation "+"
         /// </summary>
         /// <param name="cust"></param>
         /// <returns></returns>
@@ -38,6 +40,37 @@ namespace adonet1
                 cust.CustomerId = (int)command.ExecuteScalar();
             }
             return cust;
+        }
+
+        /// <summary>
+        /// Update customer record using parameterized SQL. 
+        /// - UPDATE
+        /// - parameterized SQL
+        /// - SQL string concatenation "+"
+        /// </summary>
+        /// <param name="cust"></param>
+        /// <returns></returns>
+        public int UpdateCustomerRecord(Customer cust)
+        {
+            int numRowsAffected = 0;
+            using (var connection = new SqlConnection(connectionString))
+            {
+                var command = new SqlCommand(
+                    "UPDATE [dbo].[tbl_customers] " +
+                    "SET first_nm = @FirstName, " +
+                    "    last_nm = @LastName, " +
+                    "    phone = @Phone " +
+                    "WHERE cust_id = @CustomerId",
+                    connection);
+                command.Parameters.AddWithValue("@FirstName", cust.FirstName);
+                command.Parameters.AddWithValue("@LastName", cust.LastName);
+                command.Parameters.AddWithValue("@Phone", cust.Phone);
+                command.Parameters.AddWithValue("@CustomerId", cust.CustomerId);
+
+                connection.Open();
+                numRowsAffected = (int)command.ExecuteNonQuery();
+            }
+            return numRowsAffected;
         }
 
         /// <summary>

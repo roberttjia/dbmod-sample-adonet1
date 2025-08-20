@@ -53,6 +53,37 @@ namespace adonet1Test
             Assert.Equal(cust.LastName, cust2.LastName);
             Assert.Equal(cust.Phone, cust2.Phone);
         }
+
+        [Fact]
+        public void Test_Insert_And_Update_Customer_By_Id()
+        {
+            var dataAccess = new CustomerDataAccess();
+
+            // Insert a customer with a unique last name
+            Guid guid = Guid.NewGuid();
+            string part = guid.ToString("N").Substring(0, 8);
+            var cust = new Customer()
+            {
+                FirstName = "Jane",
+                LastName = $"Smith{part}",
+                Phone = "212-555-1234"
+            };
+            cust = dataAccess.InsertCustomerRecord(cust);
+            Assert.True(cust.CustomerId > 0);
+
+
+            // Update customer just inserted.
+            cust.FirstName = $"Alias{part}";
+            dataAccess.UpdateCustomerRecord(cust);
+
+            // Retrieve and validate the update happened
+            var cust2 = dataAccess.GetCustomerById(cust.CustomerId);
+            Assert.Equal(cust.CustomerId, cust2.CustomerId);
+            Assert.Equal(cust.FirstName, cust2.FirstName);
+            Assert.Equal(cust.LastName, cust2.LastName);
+            Assert.Equal(cust.Phone, cust2.Phone);
+        }
+
         [Fact]
         public void Test_SP_With_In_Out_Params()
         {
