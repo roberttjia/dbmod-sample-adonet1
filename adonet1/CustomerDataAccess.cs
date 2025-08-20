@@ -90,16 +90,15 @@ namespace adonet1
                 var adapter = new SqlDataAdapter(command);
                 var dataTable = new DataTable();
                 adapter.Fill(dataTable);
-                for (int r = 0; r < dataTable.Rows.Count; r++)
+                if (dataTable.Rows.Count > 0)
                 {
                     customer = new Customer()
                     {
-                        CustomerId = (int)dataTable.Rows[r]["cust_id"],
-                        FirstName = (string)dataTable.Rows[r]["first_nm"],
-                        LastName = (string)dataTable.Rows[r]["last_nm"],
-                        Phone = (string)dataTable.Rows[r]["phone"]
+                        CustomerId = (int)dataTable.Rows[0]["cust_id"],
+                        FirstName = (string)dataTable.Rows[0]["first_nm"],
+                        LastName = (string)dataTable.Rows[0]["last_nm"],
+                        Phone = (string)dataTable.Rows[0]["phone"]
                     };
-                    break;
                 }
             }
             return customer;

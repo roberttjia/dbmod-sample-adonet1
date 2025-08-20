@@ -62,6 +62,32 @@ namespace adonet1
             return product;
         }
 
+        public Order InsertOrderRecord(Customer cust, Product prod, int quantity)
+        {
+            var order = new Order()
+            {
+                CustomerId = cust.CustomerId,
+                ProductId = prod.ProductId,
+                Quantity = quantity,
+                TotalPrice = quantity * prod.Price
+            };
+            string sql = "INSERT INTO tbl_orders (cust_id, product_id, quantity, total_price) VALUES (@CustId, @ProductId, @Quantity, @TotalPrice)";
+            var genericParameters = new GenericSQLParams();
+            genericParameters.Add("@CustId", cust.CustomerId);
+            genericParameters.Add("@ProductId", prod.ProductId);
+            genericParameters.Add("@Quantity", quantity);
+            genericParameters.Add("@TotalPrice", order.TotalPrice);
+
+            var rowsAffected = _genericDataAccess.ExecuteNonQuerySQL(sql, genericParameters);
+
+            // Get the latest Order Id. This is just for testing as this is susceptible to race conditions.
+            string sql2 = "SELECT MAX(order_id) FROM tbl_orders";
+            var ds =_genericDataAccess.ExecuteSelectSQL(sql2, new GenericSQLParams());
+            order.OrderId = (int)ds.Tables[0].Rows[0][0];
+
+            return order;
+        }
+
         private List<Customer> ReadCustomersDS(DataSet dataSet)
         {
             var customers = new List<Customer>();

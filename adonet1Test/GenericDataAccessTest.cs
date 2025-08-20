@@ -73,5 +73,38 @@ namespace adonet1Test
                 Assert.True(rowCount == 1);
             }
         }
+
+        [Fact]
+        public void Test_Insert_Product_Record()
+        {
+            var prefix = "ABC123";
+            Guid guid = Guid.NewGuid();
+            string part = guid.ToString("N").Substring(0, 8);
+
+            // Insert a customer with a unique last name
+            var dataAccess = new CustomerDataAccess();
+            var cust = new Customer()
+            {
+                FirstName = "John",
+                LastName = $"Doe{part}",
+                Phone = "212-333-4455"
+            };
+            cust = dataAccess.InsertCustomerRecord(cust);
+
+
+            var product = new Product()
+            {
+                Code = $"{prefix}-{part}",
+                Name = "Test Product",
+                Description = "Test Description",
+                Price = 19.99M
+            };
+            var bl = new GenericBusinessLayer();
+            product = bl.InsertProductRecord(product);
+
+            var order = bl.InsertOrderRecord(cust, product, 15);
+            decimal expected = 15 * product.Price;
+            Assert.True(order.TotalPrice == expected);
+        }
     }
 }

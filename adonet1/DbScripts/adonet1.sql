@@ -1,6 +1,6 @@
 ﻿USE [adonet1]
 GO
-/****** Object:  Table [dbo].[tbl_customers]    Script Date: 8/19/2025 5:43:45 PM ******/
+/****** Object:  Table [dbo].[tbl_customers]    Script Date: 8/20/2025 12:31:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -16,7 +16,24 @@ CREATE TABLE [dbo].[tbl_customers](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[tbl_products]    Script Date: 8/19/2025 5:43:45 PM ******/
+/****** Object:  Table [dbo].[tbl_orders]    Script Date: 8/20/2025 12:31:06 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[tbl_orders](
+	[order_id] [int] IDENTITY(1,1) NOT NULL,
+	[cust_id] [int] NOT NULL,
+	[product_id] [int] NOT NULL,
+	[quantity] [int] NOT NULL,
+	[total_price] [decimal](18, 2) NOT NULL,
+ CONSTRAINT [PK_tbl_orders] PRIMARY KEY CLUSTERED 
+(
+	[order_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[tbl_products]    Script Date: 8/20/2025 12:31:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -33,7 +50,17 @@ CREATE TABLE [dbo].[tbl_products](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  StoredProcedure [dbo].[proc_DeleteCustomerById]    Script Date: 8/19/2025 5:43:45 PM ******/
+ALTER TABLE [dbo].[tbl_orders]  WITH CHECK ADD  CONSTRAINT [FK_tbl_orders_tbl_customers] FOREIGN KEY([cust_id])
+REFERENCES [dbo].[tbl_customers] ([cust_id])
+GO
+ALTER TABLE [dbo].[tbl_orders] CHECK CONSTRAINT [FK_tbl_orders_tbl_customers]
+GO
+ALTER TABLE [dbo].[tbl_orders]  WITH CHECK ADD  CONSTRAINT [FK_tbl_orders_tbl_products] FOREIGN KEY([product_id])
+REFERENCES [dbo].[tbl_products] ([product_id])
+GO
+ALTER TABLE [dbo].[tbl_orders] CHECK CONSTRAINT [FK_tbl_orders_tbl_products]
+GO
+/****** Object:  StoredProcedure [dbo].[proc_DeleteCustomerById]    Script Date: 8/20/2025 12:31:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -48,7 +75,7 @@ BEGIN
     SET @Deleted_Count = @@ROWCOUNT
 END
 GO
-/****** Object:  StoredProcedure [dbo].[proc_SearchCustomersByLastName]    Script Date: 8/19/2025 5:43:45 PM ******/
+/****** Object:  StoredProcedure [dbo].[proc_SearchCustomersByLastName]    Script Date: 8/20/2025 12:31:06 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
